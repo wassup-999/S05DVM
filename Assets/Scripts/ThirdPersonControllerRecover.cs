@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -136,6 +137,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
             if (dashTimer <= 0)
                 IsDashing = false;
+            //StartCoroutine(nameof(DashCooldown));
         }
         controller.Move(moveDir * Time.deltaTime);
     }
@@ -165,9 +167,11 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         }
     }
     private void OnDash(InputAction.CallbackContext context)
-    {
+    {      
         IsDashing = true;
         dashTimer = dashDuration;
+        StartCoroutine(nameof(DashCooldown));
+        
     }
     
     public void EnableWalRum()
@@ -215,5 +219,21 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
         Gizmos.color = Color.orange;
         Gizmos.DrawRay(impactPoint, crossResult * rayLenght);
+    }
+
+    public float cooldownTimer;
+    public float cooldownTime;
+    public IEnumerator DashCooldown()
+    {
+        while (IsDashing == true)
+        {
+            //yield return new WaitUntil(() => IsDashing = false);  
+            //yield return new WaitForSeconds(1f);
+           
+                  
+            Debug.Log("Cooldown");
+            ;
+        }
+        yield break;
     }
 }

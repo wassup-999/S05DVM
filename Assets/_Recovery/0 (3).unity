@@ -1901,6 +1901,8 @@ MonoBehaviour:
   moveInput: {x: 0, y: 0}
   rayLenght: 1
   enableWalkRun: 0
+  cooldownTimer: 0
+  cooldownTime: 2
 --- !u!143 &7651181917797047159
 CharacterController:
   m_ObjectHideFlags: 0
