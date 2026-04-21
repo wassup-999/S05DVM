@@ -1899,6 +1899,7 @@ MonoBehaviour:
   dashForce: 0
   dashDuration: 0.2
   moveInput: {x: 0, y: 0}
+  rayLenght: 1
 --- !u!143 &7651181917797047159
 CharacterController:
   m_ObjectHideFlags: 0

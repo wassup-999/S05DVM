@@ -1,12 +1,17 @@
+using Sirenix.OdinInspector;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ThirdPersonControllerRecover : MonoBehaviour
 {
+    [FoldoutGroup ("References")]
     public InputSystem_Actions inputs;
+    [FoldoutGroup("References")]
     private CharacterController controller;
+    [FoldoutGroup("References")]
     public CinemachineCamera characterCamera;
+    [FoldoutGroup("References")]
     public Animator animator;
 
 
@@ -24,6 +29,8 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     private float dashTimer;
 
     [SerializeField] private Vector2 moveInput;
+
+    public float rayLenght;
 
 
     private void Awake()
@@ -140,19 +147,39 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         IsDashing = true;
         dashTimer = dashDuration;
     }
+    Vector3 normalDebug;
+    Vector3 impactPoint;
+    Vector3 crossResult;
     public void EnableWalRum()
     {
-        Physics.Raycast(transform.position,transform.right , out  RaycastHit hit ,3f);
-        if(hit.collider && hit.collider.gameObject.tag =="Wall")
+        Physics.Raycast(transform.position,transform.right , out  RaycastHit hitRight , rayLenght);
+        Physics.Raycast(transform.position, -transform.right, out RaycastHit hitLeft, rayLenght);
+        if (hitRight.collider && hitRight.collider.gameObject.tag =="Wall")
         {
-            Debug.Log("Aleluya");        
+            Debug.Log("Aleluya R");
+            normalDebug = hitRight.normal;
+            impactPoint = hitRight.point;
+            crossResult = Vector3.Cross(normalDebug,transform.up);
+        }
+        if(hitLeft.collider && hitLeft.collider.gameObject.tag == "Wall")
+        {
+            Debug.Log("Aleluya L");
+            
         }
     }
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.purple;
-        Gizmos.DrawRay(transform.position, transform.right * 3);
+        Gizmos.DrawRay(transform.position, transform.right * rayLenght);
         Gizmos.color = Color.navyBlue;
-        Gizmos.DrawRay(transform.position , -transform.right* 3);
+        Gizmos.DrawRay(transform.position , -transform.right* rayLenght);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(impactPoint, normalDebug * rayLenght);
+        Gizmos.DrawSphere(impactPoint, 0.1f);
+
+        Gizmos.color = Color.orange;
+        Gizmos.DrawRay(impactPoint, crossResult * rayLenght);
     }
 }
