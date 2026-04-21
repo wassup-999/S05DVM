@@ -173,9 +173,10 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     public void EnableWalRum()
     {
         Physics.Raycast(transform.position,transform.right , out  RaycastHit hitRight , rayLenght);
+
         Physics.Raycast(transform.position, -transform.right, out RaycastHit hitLeft, rayLenght);
         
-        if (hitRight.collider && hitRight.collider.gameObject.tag =="Wall")
+        if (hitRight.collider !=null && hitRight.collider.gameObject.tag =="Wall")
         {
             enableWalkRun = true;
             Debug.Log("Aleluya R");
@@ -185,14 +186,15 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
             if(Vector3.Dot(crossResult,transform.forward) < 0)
             {
-                crossResult *= 1;
+                crossResult *= -1;
             }
         }
         else
         {
             enableWalkRun=false;
         }
-        if(hitLeft.collider && hitLeft.collider.gameObject.tag == "Wall")
+
+        if(hitLeft.collider != null && hitLeft.collider.gameObject.tag == "Wall")
         {
             Debug.Log("Aleluya L");
             

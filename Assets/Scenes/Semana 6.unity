@@ -1900,6 +1900,7 @@ MonoBehaviour:
   dashDuration: 0.2
   moveInput: {x: 0, y: 0}
   rayLenght: 1
+  enableWalkRun: 0
 --- !u!143 &7651181917797047159
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1924,7 +1925,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.92, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
