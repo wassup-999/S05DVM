@@ -170,10 +170,9 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     {      
         IsDashing = true;
         dashTimer = dashDuration;
-        if(IsDashing == false)
-        {
-            StartCoroutine(nameof(DashCooldown));
-        }     
+        
+         StartCoroutine(nameof(DashCooldown));
+             
     }
     
     public void EnableWalRum()
@@ -224,15 +223,15 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     }
 
     public float cooldownTimer;
-    public float cooldownTime;
+    public float cooldownTime =2;
     public IEnumerator DashCooldown()
     {
-        while (IsDashing == true)
+        cooldownTimer += Time.deltaTime;
+        while (cooldownTimer> cooldownTime)
         {
-            //yield return new WaitUntil(() => IsDashing = false);  
-            //yield return new WaitForSeconds(1f);
-           
-                  
+            yield return new WaitUntil(() => IsDashing = true);
+            yield return new WaitForSeconds(1f);
+            yield return new WaitUntil(() => IsDashing = false);                  
             Debug.Log("Cooldown");
             
         }
