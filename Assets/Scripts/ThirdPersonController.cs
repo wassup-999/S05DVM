@@ -6,7 +6,7 @@ public class ThirdPersonController : MonoBehaviour
 {
     public InputSystem_Actions inputs;
     private CharacterController controller;
-    public CinemachineCameraController characterCamera;
+    public CinemachineCamera characterCamera;
 
 
 
