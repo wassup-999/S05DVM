@@ -137,7 +137,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
             if (dashTimer <= 0)
                 IsDashing = false;
-            //StartCoroutine(nameof(DashCooldown));
+            
         }
         controller.Move(moveDir * Time.deltaTime);
     }
@@ -170,8 +170,10 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     {      
         IsDashing = true;
         dashTimer = dashDuration;
-        StartCoroutine(nameof(DashCooldown));
-        
+        if(IsDashing == false)
+        {
+            StartCoroutine(nameof(DashCooldown));
+        }     
     }
     
     public void EnableWalRum()
@@ -232,8 +234,9 @@ public class ThirdPersonControllerRecover : MonoBehaviour
            
                   
             Debug.Log("Cooldown");
-            ;
+            
         }
         yield break;
     }
+
 }
