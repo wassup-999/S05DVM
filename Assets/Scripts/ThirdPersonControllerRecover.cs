@@ -15,23 +15,37 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     public Animator animator;
 
 
-
+    [FoldoutGroup("Controller")]
     public float moveSpeed = 5f;
+    [FoldoutGroup("Controller")]
     public float rotationSpeed = 200f;
+    [FoldoutGroup("Controller")]
     public float verticalVelocity = 0;
+    [FoldoutGroup("Controller")]
     public float jumpForce = 10;
 
-    public float pushForce = 4;
 
+    public float pushForce = 4;
+    [FoldoutGroup("Controller/Dash")]
     private bool IsDashing;
+    [FoldoutGroup("Controller/Dash")]
     public float dashForce;
+    [FoldoutGroup("Controller/Dash")]
     public float dashDuration = 0.2f;
+    [FoldoutGroup("Controller/Dash")]
     private float dashTimer;
 
     [SerializeField] private Vector2 moveInput;
+    Vector3 normalDebug;
+    Vector3 impactPoint;
+    Vector3 crossResult;
 
+    [FoldoutGroup("Controller/WalkRun")]
     public float rayLenght;
+    [FoldoutGroup("Controller/WalkRun")]
+    public bool enableWalkRun;
 
+    
 
     private void Awake()
     {
@@ -85,10 +99,20 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
 
         }
+        Vector3 moveDir;
+        if (!enableWalkRun)
+        {
+            moveDir = (cameraForwardDir * moveInput.y + transform.right * moveInput.x) * moveSpeed;
+        }
+        else
+        {
+            moveDir = (crossResult * moveInput.y) * moveSpeed;
 
-        Vector3 moveDir = (cameraForwardDir * moveInput.y + transform.right * moveInput.x) * moveSpeed;
+        }
+
+        //Vector3 moveDir = (cameraForwardDir * moveInput.y + transform.right * moveInput.x) * moveSpeed;
         float magnitud = Mathf.Abs(controller.velocity.magnitude);
-        // print(magnitud);
+       
         animator.SetFloat("Speed", magnitud);
 
 
@@ -132,8 +156,6 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     }
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-
-
         Vector3 pushDir = (hit.transform.position - transform.position).normalized;
 
         if (hit.rigidbody != null && hit.rigidbody.linearVelocity == Vector3.zero)
@@ -147,19 +169,28 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         IsDashing = true;
         dashTimer = dashDuration;
     }
-    Vector3 normalDebug;
-    Vector3 impactPoint;
-    Vector3 crossResult;
+    
     public void EnableWalRum()
     {
         Physics.Raycast(transform.position,transform.right , out  RaycastHit hitRight , rayLenght);
         Physics.Raycast(transform.position, -transform.right, out RaycastHit hitLeft, rayLenght);
+        
         if (hitRight.collider && hitRight.collider.gameObject.tag =="Wall")
         {
+            enableWalkRun = true;
             Debug.Log("Aleluya R");
             normalDebug = hitRight.normal;
             impactPoint = hitRight.point;
             crossResult = Vector3.Cross(normalDebug,transform.up);
+
+            if(Vector3.Dot(crossResult,transform.forward) < 0)
+            {
+                crossResult *= 1;
+            }
+        }
+        else
+        {
+            enableWalkRun=false;
         }
         if(hitLeft.collider && hitLeft.collider.gameObject.tag == "Wall")
         {
@@ -172,6 +203,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     {
         Gizmos.color = Color.purple;
         Gizmos.DrawRay(transform.position, transform.right * rayLenght);
+
         Gizmos.color = Color.navyBlue;
         Gizmos.DrawRay(transform.position , -transform.right* rayLenght);
 
