@@ -229,7 +229,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     public IEnumerator DashCooldown()
     {
             yield return new WaitUntil(() => IsDashing = true);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(1f);
             yield return new WaitUntil(() => IsDashing = false);                  
             Debug.Log("Cooldown");
         /*while (cooldownTimer >= cooldownTime)
