@@ -80,6 +80,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         EnableWalRum();
         OnMove();
         //OnSimpleMove();
+        
     }
 
     public void OnMove()
@@ -224,17 +225,18 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
     public float cooldownTimer;
     public float cooldownTime =2;
+
     public IEnumerator DashCooldown()
     {
-        cooldownTimer += Time.deltaTime;
-        while (cooldownTimer> cooldownTime)
-        {
             yield return new WaitUntil(() => IsDashing = true);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(4f);
             yield return new WaitUntil(() => IsDashing = false);                  
             Debug.Log("Cooldown");
+        /*while (cooldownTimer >= cooldownTime)
+        {
             
-        }
+            
+        }*/
         yield break;
     }
 
