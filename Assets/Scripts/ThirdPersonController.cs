@@ -43,7 +43,7 @@ public class ThirdPersonController : MonoBehaviour
 
         inputs.Player.Jump.performed += OnJump;
 
-        inputs.Player.Sprint.performed += OnDash;
+        inputs.Player.Dash.performed += OnDash;
 
 
 

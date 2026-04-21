@@ -35,6 +35,8 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     public float dashDuration = 0.2f;
     [FoldoutGroup("Controller/Dash")]
     private float dashTimer;
+    [FoldoutGroup("Controller/Dash")]
+    public bool CanDash = false;
 
     [SerializeField] private Vector2 moveInput;
     Vector3 normalDebug;
@@ -66,7 +68,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
         inputs.Player.Jump.performed += OnJump;
 
-        inputs.Player.Sprint.performed += OnDash;
+        inputs.Player.Dash.performed += OnDash;
 
 
 
@@ -168,11 +170,18 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         }
     }
     private void OnDash(InputAction.CallbackContext context)
-    {      
-        IsDashing = true;
-        dashTimer = dashDuration;
-        
-         StartCoroutine(nameof(DashCooldown));
+    {
+        if (CanDash == true)
+        {
+            IsDashing = true;
+            dashTimer = dashDuration;
+        }
+        else
+        {
+            Debug.Log("No puedes hacer dash aun");
+        }
+
+            StartCoroutine(nameof(DashCooldown));
              
     }
     
@@ -223,20 +232,14 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         Gizmos.DrawRay(impactPoint, crossResult * rayLenght);
     }
 
-    public float cooldownTimer;
-    public float cooldownTime =2;
+    
 
     public IEnumerator DashCooldown()
     {
-            yield return new WaitUntil(() => IsDashing = true);
-            yield return new WaitForSeconds(1f);
-            yield return new WaitUntil(() => IsDashing = false);                  
-            Debug.Log("Cooldown");
-        /*while (cooldownTimer >= cooldownTime)
-        {
-            
-            
-        }*/
+        Debug.Log("Cooldown");
+        CanDash = false;
+        yield return new WaitForSeconds(1.5f);
+        CanDash = true;       
         yield break;
     }
 
