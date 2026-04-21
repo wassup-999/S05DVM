@@ -122,6 +122,10 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
         verticalVelocity += Physics.gravity.y * Time.deltaTime;
 
+        if(enableWalkRun)
+            verticalVelocity = 0;
+        
+
         if (controller.isGrounded && verticalVelocity < 0)
             verticalVelocity = -2f;
 
@@ -203,11 +207,12 @@ public class ThirdPersonControllerRecover : MonoBehaviour
             {
                 crossResult *= -1;
             }
+            else
+            {
+                enableWalkRun=false;
+            }
         }
-        else
-        {
-            enableWalkRun=false;
-        }
+        
 
         if(hitLeft.collider != null && hitLeft.collider.gameObject.tag == "Wall")
         {
