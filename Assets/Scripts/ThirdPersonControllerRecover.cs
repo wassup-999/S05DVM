@@ -28,7 +28,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
     public float pushForce = 4;
     [FoldoutGroup("Controller/Dash")]
-    private bool IsDashing;
+    private bool IsDashing = false;
     [FoldoutGroup("Controller/Dash")]
     public float dashForce;
     [FoldoutGroup("Controller/Dash")]
@@ -75,7 +75,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     }
     void Start()
     {
-
+        
     }
     void Update()
     {
@@ -144,7 +144,9 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
             if (dashTimer <= 0)
                 IsDashing = false;
-            
+
+                
+
         }
         controller.Move(moveDir * Time.deltaTime);
     }
@@ -175,18 +177,8 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     }
     private void OnDash(InputAction.CallbackContext context)
     {
-        if (CanDash == true)
-        {
-            IsDashing = true;
-            dashTimer = dashDuration;
-        }
-        else
-        {
-            Debug.Log("No puedes hacer dash aun");
-        }
-
-            StartCoroutine(nameof(DashCooldown));
-             
+        
+        StartCoroutine(DashCooldown());
     }
     
     public void EnableWalRum()
@@ -241,11 +233,25 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
     public IEnumerator DashCooldown()
     {
-        Debug.Log("Cooldown");
-        CanDash = false;
-        yield return new WaitForSeconds(1.5f);
-        CanDash = true;       
-        yield break;
+        int counterCooldown = 3;     
+        while (counterCooldown > 0)
+        {                                  
+            CanDash = false;
+            yield return new WaitUntil(() => !IsDashing);
+            counterCooldown--;
+            Debug.Log("Cooldown: " + counterCooldown);
+            yield return new WaitForSeconds(1);
+
+            if (counterCooldown <= 0)
+            {
+                IsDashing = true;
+                dashTimer = dashDuration;
+                //yield return new WaitForSeconds(1);
+                CanDash = true;
+            }
+            yield return null;
+        }
+        yield return null;
     }
 
 }
