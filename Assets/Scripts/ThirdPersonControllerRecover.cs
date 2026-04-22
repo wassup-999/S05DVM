@@ -231,21 +231,6 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
     public IEnumerator DashCooldown()
     {
-        while(dashCooldownTimer <= dashCooldown)
-        {
-            CanDash = false;          
-            dashCooldownTimer += Time.deltaTime;
-            Debug.Log("Cooldown: " + dashCooldownTimer);           
-            if(dashCooldownTimer >= dashCooldown)
-            {
-                CanDash = true;
-                dashCooldownTimer = 0f; // Reset the cooldown timer
-            }
-        }
-        yield break;
-
-
-        /*
         int counterCooldown = 3;     
         while (counterCooldown > 0)
         {                                  
@@ -265,7 +250,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
             yield return null;
         }
         yield return null;
-        */
+        
 
     }
 }
