@@ -37,6 +37,10 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     private float dashTimer;
     [FoldoutGroup("Controller/Dash")]
     public bool CanDash = false;
+    [FoldoutGroup("Controller/Dash")]
+    public float dashCooldown = 3f;
+    [FoldoutGroup("Controller/Dash")]
+    public float dashCooldownTimer;
 
     [SerializeField] private Vector2 moveInput;
     Vector3 normalDebug;
@@ -144,9 +148,6 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
             if (dashTimer <= 0)
                 IsDashing = false;
-
-                
-
         }
         controller.Move(moveDir * Time.deltaTime);
     }
@@ -198,14 +199,13 @@ public class ThirdPersonControllerRecover : MonoBehaviour
             if(Vector3.Dot(crossResult,transform.forward) < 0)
             {
                 crossResult *= -1;
-            }
-            else
-            {
-                enableWalkRun=false;
-            }
+            }          
+        }
+        else
+        {
+            enableWalkRun=false;
         }
         
-
         if(hitLeft.collider != null && hitLeft.collider.gameObject.tag == "Wall")
         {
             Debug.Log("Aleluya L");
@@ -229,10 +229,23 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         Gizmos.DrawRay(impactPoint, crossResult * rayLenght);
     }
 
-    
-
     public IEnumerator DashCooldown()
     {
+        while(dashCooldownTimer <= dashCooldown)
+        {
+            CanDash = false;          
+            dashCooldownTimer += Time.deltaTime;
+            Debug.Log("Cooldown: " + dashCooldownTimer);           
+            if(dashCooldownTimer >= dashCooldown)
+            {
+                CanDash = true;
+                dashCooldownTimer = 0f; // Reset the cooldown timer
+            }
+        }
+        yield break;
+
+
+        /*
         int counterCooldown = 3;     
         while (counterCooldown > 0)
         {                                  
@@ -252,6 +265,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
             yield return null;
         }
         yield return null;
-    }
+        */
 
+    }
 }
