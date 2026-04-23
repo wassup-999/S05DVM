@@ -36,11 +36,12 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     [FoldoutGroup("Controller/Dash")]
     private float dashTimer;
     [FoldoutGroup("Controller/Dash")]
-    public bool CanDash = false;
+    public bool CanDash = true;
     [FoldoutGroup("Controller/Dash")]
-    public float dashCooldown = 3f;
+    public float CurrentCooldownDash;
     [FoldoutGroup("Controller/Dash")]
-    public float dashCooldownTimer;
+    public float CoolDownDash = 3f;
+
 
     [SerializeField] private Vector2 moveInput;
     Vector3 normalDebug;
@@ -178,8 +179,15 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     }
     private void OnDash(InputAction.CallbackContext context)
     {
+        if (CanDash)
+        {
+            IsDashing = true;
+            CanDash = false;
+            dashTimer = dashDuration;
+
+            StartCoroutine(DashCooldown());
+        }
         
-        StartCoroutine(DashCooldown());
     }
     
     public void EnableWalRum()
@@ -231,26 +239,13 @@ public class ThirdPersonControllerRecover : MonoBehaviour
 
     public IEnumerator DashCooldown()
     {
-        int counterCooldown = 3;     
-        while (counterCooldown > 0)
-        {                                  
-            CanDash = false;
-            yield return new WaitUntil(() => !IsDashing);
-            counterCooldown--;
-            Debug.Log("Cooldown: " + counterCooldown);
-            yield return new WaitForSeconds(1);
-
-            if (counterCooldown <= 0)
-            {
-                IsDashing = true;
-                dashTimer = dashDuration;
-                //yield return new WaitForSeconds(1);
-                CanDash = true;
-            }
+        CurrentCooldownDash = 0;
+        while(CurrentCooldownDash < CoolDownDash)
+        {
+            CurrentCooldownDash += Time.deltaTime;
             yield return null;
         }
-        yield return null;
-        
-
+        CanDash = true;
+        yield break;     
     }
 }
