@@ -42,6 +42,8 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     [FoldoutGroup("Controller/Dash")]
     public float CoolDownDash = 3f;
 
+    [FoldoutGroup("Controller/Animator") , SerializeField]
+    public CinemachineImpulseSource source;
 
     [SerializeField] private Vector2 moveInput;
     Vector3 normalDebug;
@@ -52,8 +54,10 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     public float rayLenght;
     [FoldoutGroup("Controller/WalkRun")]
     public bool enableWalkRun;
+    [FoldoutGroup("Controller/WalkRun")]
+    public bool CanWalkRun =true;
 
-    
+
 
     private void Awake()
     {
@@ -116,7 +120,8 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         else
         {
             moveDir = (crossResult * moveInput.y) * moveSpeed;
-
+            source.GenerateImpulse();
+            //falta implementar camara con impulse
         }
 
         //Vector3 moveDir = (cameraForwardDir * moveInput.y + transform.right * moveInput.x) * moveSpeed;
