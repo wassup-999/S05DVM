@@ -56,6 +56,10 @@ public class ThirdPersonControllerRecover : MonoBehaviour
     public bool enableWalkRun;
     [FoldoutGroup("Controller/WalkRun")]
     public bool CanWalkRun =true;
+    [FoldoutGroup("Controller/WalkRun")]
+    public float WalkRunCooldown;
+    [FoldoutGroup("Controller/WalkRun")]
+    public float CurrentWalkRunCooldown;
 
 
 
@@ -252,5 +256,17 @@ public class ThirdPersonControllerRecover : MonoBehaviour
         }
         CanDash = true;
         yield break;     
+    }
+
+    public IEnumerator WalkRunCD()
+    {
+        CurrentWalkRunCooldown = 0;
+        while(CurrentWalkRunCooldown < WalkRunCooldown && !controller.isGrounded)
+        {
+            CurrentWalkRunCooldown += Time.deltaTime;
+            yield return null;
+        }
+        //CanWalkRun = true;
+        yield break;
     }
 }
