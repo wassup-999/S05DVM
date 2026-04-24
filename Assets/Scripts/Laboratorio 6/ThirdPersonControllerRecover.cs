@@ -127,6 +127,7 @@ public class ThirdPersonControllerRecover : MonoBehaviour
             source.GenerateImpulse();
             //falta implementar camara con impulse
         }
+        //if(source.)
 
         //Vector3 moveDir = (cameraForwardDir * moveInput.y + transform.right * moveInput.x) * moveSpeed;
         float magnitud = Mathf.Abs(controller.velocity.magnitude);
